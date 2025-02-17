@@ -64,6 +64,7 @@ O servidor utiliza **sockets e multithreading** para suportar múltiplos jogador
    **Substitua `IP_DA_MAQUINA_SERVIDOR` pelo IP da máquina onde o servidor está rodando.**
    
    server.py: linha 8
+   
    index.html: linha 147  
 
 Agora o jogo está disponível e pronto para ser jogado por múltiplos jogadores na rede.

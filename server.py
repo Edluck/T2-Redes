@@ -5,7 +5,7 @@ import random
 import os
 
 # Configurações do servidor
-HOST = '127.0.0.1'  # Endereço IP do servidor (localhost)
+HOST = '172.20.6.125'  # Endereço IP do servidor (localhost)
 PORT = 65433        # Porta que o servidor vai escutar
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Diretório do arquivo atual
 
@@ -73,6 +73,11 @@ class CampoMinado:
 
         if self.tabuleiro[x][y] == -1:
             self.estado_jogo[x][y] = "bomba"
+            if len(self.jogadores) == 2 and self.jogador_atual == 1:
+                self.adicionar_espectador
+                self.fim = True
+                self.vencedor = self.jogadores[0]
+                return "vitoria"
             self.remover_jogador(jogador) # O problema do ultimo player esta aqui
             self.adicionar_espectador(jogador)
             if len(self.jogadores) == 1:  # Se sobrar um jogador, ele vence

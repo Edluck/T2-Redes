@@ -141,10 +141,12 @@
         </div>
     </div>
     <script>
+        // Solicita o nome do jogador
         const jogador = prompt("Digite seu nome para entrar no jogo:");
         while(!jogador) jogador = prompt("Nome invalido. Digite seu nome e click que OK")
         const ipServer = 'http://127.0.0.1:65433'
 
+        // Função para entrar no jogo
         async function entrarNoJogo() {
             try {
                 const resposta = await fetch(ipServer, {
@@ -161,6 +163,7 @@
             }
         }
 
+        // Função para realizar uma jogada
         async function jogar(x, y) {
             try {
                 const resposta = await fetch(ipServer, {
@@ -176,6 +179,8 @@
                 console.error('Erro ao jogar:', erro);
             }
         }
+
+        // Função para atualizar o tabuleiro
         function atualizarTabuleiro(estado) {
             const tabuleiro = document.getElementById('tabuleiro');
             tabuleiro.innerHTML = '';
@@ -201,6 +206,7 @@
             }
         }
 
+        // Função para atualizar a lista de jogadores
         function atualizarListaJogadores(jogadores, jogadorAtual) {
             const lista = document.getElementById("lista-jogadores");
             lista.innerHTML = '';
@@ -217,6 +223,7 @@
             });
         }
 
+        // Função para atualizar a lista de espectadores
         function atualizarListaEspectadores(espectadores) {
             const lista = document.getElementById("lista-espectadores");
             lista.innerHTML = '';
@@ -228,7 +235,7 @@
             });
         }
 
-
+        // Função para atualizar o estado do jogo periodicamente
         setInterval(async () => {
             try {
                 const resposta = await fetch(ipServer + '/estado');
@@ -246,9 +253,9 @@
             } catch (erro) {
                 console.error('Erro ao atualizar o jogo:', erro);
             }
-        }, 500);
+        }, 1500);
 
-
+        // Chama a função para entrar no jogo
         entrarNoJogo();
     </script>
 </body>

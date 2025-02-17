@@ -9,7 +9,7 @@ HOST = '127.0.0.1'  # Endereço IP do servidor (localhost)
 PORT = 65433        # Porta que o servidor vai escutar
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Diretório do arquivo atual
 
-
+# Classe que representa o jogo Campo Minado
 class CampoMinado:
     def __init__(self, tamanho, bombas):
         self.tamanho = tamanho
@@ -23,6 +23,7 @@ class CampoMinado:
         self.fim = False
         self.vencedor = ""
 
+    # Método para criar o tabuleiro com bombas
     def criar_tabuleiro(self):
         tabuleiro = [[0 for _ in range(self.tamanho)] for _ in range(self.tamanho)]
         for _ in range(self.bombas):
@@ -32,31 +33,37 @@ class CampoMinado:
             tabuleiro[x][y] = -1  # -1 representa uma bomba
         return tabuleiro
 
+    # Método para adicionar um jogador
     def adicionar_jogador(self, jogador):
         if len(self.jogadores) < 5:
             self.jogadores.append(jogador)
             return True
         return False
 
+    # Método para remover um jogador
     def remover_jogador(self, jogador):
         if jogador in self.jogadores:
             self.jogadores.remove(jogador)
             return True
         return False
 
+    # Método para adicionar um espectador
     def adicionar_espectador(self, espectador):
         self.espectadores.append(espectador)
         return True
 
+    # Método para remover um espectador
     def remover_espectador(self, espectador):
         if espectador in self.espectadores:
             self.espectadores.remove(espectador)
             return True
 
+    # Método para passar o turno para o próximo jogador
     def proximo_turno(self):
         if len(self.jogadores) > 1:
             self.jogador_atual = (self.jogador_atual + 1) % len(self.jogadores)
 
+    # Método para realizar uma jogada
     def jogar(self, jogador, x, y):
         if jogador not in self.jogadores:
             return "jogador_invalido"
@@ -65,9 +72,11 @@ class CampoMinado:
             return "fora_de_turno"
 
         if self.tabuleiro[x][y] == -1:
+            self.adicionar_espectador(jogador)
             self.remover_jogador(jogador)
             self.estado_jogo[x][y] = "bomba"
             if len(self.jogadores) == 1:  # Se sobrar um jogador, ele vence
+                self.fim = True
                 return "vitoria"
             return "bomba"
         else:
@@ -75,6 +84,7 @@ class CampoMinado:
             self.proximo_turno()
             return "seguro"
 
+# Instancia o jogo Campo Minado
 jogo = CampoMinado(tamanho=5, bombas=5)
 
 # Função para lidar com um cliente
@@ -100,6 +110,7 @@ def handle_client(conn, addr):
             "fim": jogo.fim,
             "vencedor": jogo.vencedor
             }
+            print(estado)
             resposta = json.dumps(estado)
             conn.sendall(f"HTTP/1.1 200 OK\nContent-Type: application/json\n\n{resposta}".encode('utf-8'))
             return
@@ -142,11 +153,7 @@ def handle_client(conn, addr):
                         resultado = jogo.jogar(jogador, x, y)
                         if resultado == "bomba":
                             resposta = {"status": "fim", "mensagem": "Você perdeu! Agora é um espectador."}
-                            jogo.remover_jogador(jogador)
-                            jogo.adicionar_espectador(jogador)
                         elif resultado == "vitoria":
-                            jogo.adicionar_espectador(jogador)
-                            jogo.remover_jogador(jogador)
                             jogo.fim = True
                             jogo.vencedor = jogo.jogadores[0]
                             resposta = {"status": "vitoria", "vencedor": jogo.jogadores[0]}
@@ -173,7 +180,6 @@ def handle_client(conn, addr):
             response = "HTTP/1.1 400 Bad Request\nContent-Type: text/plain\n\nRequisição inválida"
             conn.sendall(response.encode('utf-8'))
 
-
 # Função principal para iniciar o servidor
 def start_server():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -186,6 +192,7 @@ def start_server():
             thread = threading.Thread(target=handle_client, args=(conn, addr))
             thread.start()
             print(f'Número de threads ativas: {threading.active_count() - 1}')  # Desconta a thread principal
+            
 
 if __name__ == '__main__':
-    start_server()#
+    start_server()

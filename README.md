@@ -44,7 +44,7 @@ O servidor utiliza **sockets e multithreading** para suportar múltiplos jogador
    `cd T2-Redes`  
 
 2. **Instale as dependências (se houver):**  
-   Este projeto não precisa de bibliotecas externas, somente que a imagem da estrela e bomba, dois png, estejam no mesmo diretório do servidoe e do index.  
+   Este projeto não precisa de bibliotecas externas, somente que a imagem da estrela e bomba, dois png, estejam no mesmo diretório do server.py e do index.html.  
 
 3. **Execute o servidor:**  
    `python3 server.py`  

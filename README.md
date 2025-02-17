@@ -62,6 +62,7 @@ O servidor utiliza **sockets e multithreading** para suportar múltiplos jogador
      `http://IP_DA_MAQUINA_SERVIDOR:65433`  
 
    **Substitua `IP_DA_MAQUINA_SERVIDOR` pelo IP da máquina onde o servidor está rodando.**
+   
    server.py: linha 8
    index.html: linha 147  
 

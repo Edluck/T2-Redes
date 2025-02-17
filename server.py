@@ -72,12 +72,15 @@ class CampoMinado:
             return "fora_de_turno"
 
         if self.tabuleiro[x][y] == -1:
-            self.adicionar_espectador(jogador)
-            self.remover_jogador(jogador)
             self.estado_jogo[x][y] = "bomba"
+            self.remover_jogador(jogador) # O problema do ultimo player esta aqui
+            self.adicionar_espectador(jogador)
             if len(self.jogadores) == 1:  # Se sobrar um jogador, ele vence
                 self.fim = True
+                self.vencedor = self.jogadores[0]
                 return "vitoria"
+            if self.jogador_atual >= len(self.jogadores):
+                self.jogador_atual = 0
             return "bomba"
         else:
             self.estado_jogo[x][y] = "seguro"
@@ -110,7 +113,7 @@ def handle_client(conn, addr):
             "fim": jogo.fim,
             "vencedor": jogo.vencedor
             }
-            print(estado)
+            #print(estado)
             resposta = json.dumps(estado)
             conn.sendall(f"HTTP/1.1 200 OK\nContent-Type: application/json\n\n{resposta}".encode('utf-8'))
             return

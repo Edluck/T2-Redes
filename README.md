@@ -41,12 +41,12 @@ O servidor utiliza **sockets e multithreading** para suportar múltiplos jogador
 
 1. **Clone o repositório:**  
    `git clone <URL_DO_REPOSITORIO>`  
-   `cd T2-Redes`  
+   `cd T2-Redes-main` ou `cd T2-Redes`  
 
-2. **Instale as dependências (se houver):**  
+3. **Instale as dependências (se houver):**  
    Este projeto não precisa de bibliotecas externas, somente que a imagem da estrela e bomba, dois png, estejam no mesmo diretório do server.py e do index.html.  
 
-3. **Execute o servidor:**  
+4. **Execute o servidor:**  
    `python3 server.py`  
 
    Após executar o comando, a seguinte mensagem será exibida:  
@@ -54,7 +54,7 @@ O servidor utiliza **sockets e multithreading** para suportar múltiplos jogador
 
    Isso significa que o servidor está rodando corretamente.  
 
-4. **Acesse o jogo no navegador:**  
+5. **Acesse o jogo no navegador:**  
    - Se for jogar na mesma máquina onde o servidor está rodando, acesse:  
      `http://127.0.0.1:65433`  
 

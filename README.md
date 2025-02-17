@@ -86,6 +86,10 @@ Exemplo:
 (Onde `190.160.1.100` é o IP da máquina rodando o servidor)  
 
 ---
+## Erros
+- Erro ao conectar ao servidor. Tente novamente. => verifique se colocou o ip:porta no index.html e o ip no server.py
+- Se por acaso o prompt pedindo o nome não aparecer, reinicie a página.
+---
 
 ## Funcionalidades Implementadas  
 - **Servidor com sockets e multithreading** para suportar múltiplos jogadores.  

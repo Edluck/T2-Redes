@@ -38,7 +38,7 @@ class CampoMinado:
         if len(self.jogadores) < 5:
             self.jogadores.append(jogador)
             return True
-        return False
+        self.adicionar_espectador(jogador)
 
     # Método para remover um jogador
     def remover_jogador(self, jogador):
@@ -145,9 +145,6 @@ def handle_client(conn, addr):
                 if acao == 'entrar':
                     if jogo.adicionar_jogador(jogador):
                         resposta = {"status": "sucesso", "mensagem": f"Jogador {jogador} entrou no jogo."}
-                    else:
-                        resposta = {"status": "erro", "mensagem": "Jogador já está na partida ou limite atingido."}
-
                 elif acao == 'jogar':
                     x, y = dados.get('x'), dados.get('y')
                     if x is None or y is None:

@@ -103,7 +103,8 @@ Exemplo:
 - Criar um sistema de salas para que vários jogos possam acontecer ao mesmo tempo, com diferentes tamanhos de campo.  
 - Salvar estatísticas dos jogadores (número de vitórias, derrotas, etc.).  
 - Transformar em um jogo online global (hospedando em um servidor real na nuvem).  
-- Correção de bugs quando o penúltimo jogador perde, o jogo buga e não atualiza normalmente pro vencedor ou que ele é um espectador, é necessário reiniciar a pagina
+- Correção de bugs quando o penúltimo jogador perde, o jogo buga e não atualiza normalmente pro vencedor ou que ele é um espectador, é necessário reiniciar a pagina.
+  
 **Erro conhecido**: IndexError, causado pela linha 76 no server.py, Se não for o ultimo player a clicar, tudo funciona.
 
 ---

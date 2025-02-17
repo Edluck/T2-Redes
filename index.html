@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campo Minado</title>
+    <style>
+        /* Corpo da página */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Container principal para alinhar tabuleiro e lista de jogadores */
+        .container {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        /* Tabuleiro */
+        #tabuleiro {
+            display: grid;
+            grid-template-columns: repeat(5, 60px);
+            gap: 5px;
+            background: #ddd;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Células */
+        .celula {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #999;
+            background-color: #bbb;
+            cursor: pointer;
+            font-size: 24px;
+            border-radius: 8px;
+            transition: background 0.3s, transform 0.1s;
+        }
+
+        /* Ajuste do tamanho das imagens dentro das células */
+        .celula img {
+            width: 90%;
+            height: 90%;
+            object-fit: contain;
+        }
+
+        /* Painel de jogadores */
+        #jogadores {
+            width: 200px;
+            padding: 10px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: left;
+        }
+
+        #jogadores h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        /* Lista de jogadores */
+        #lista-jogadores {
+            list-style: none;
+            padding: 0;
+        }
+
+        #lista-jogadores li {
+            font-size: 16px;
+            padding: 5px 0;
+        }
+
+        /* Painel de Espectadores */
+        #espectadores {
+            width: 200px;
+            padding: 10px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: left;
+        }
+
+        #espectadores h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        /* Lista de espectadores */
+        #lista-espectadores {
+            list-style: none;
+            padding: 0;
+        }
+
+        #lista-espectadores li {
+            font-size: 16px;
+            padding: 5px 0;
+        }
+
+        /* Destacar jogador da vez */
+        .jogador-atual {
+            font-weight: bold;
+            color: green;
+        }
+
+        .espectadores-atuais {
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+
+</head>
+
+<body>
+    <h1>Campo Minado</h1>
+    <p id="vez">Vez do jogador: </p>
+
+    <div class="container">
+        <div id="tabuleiro"></div>
+        <div id="jogadores">
+            <h2>Jogando:</h2>
+            <ul id="lista-jogadores"></ul>
+        </div>
+        <div id="espectadores">
+            <h2>Espectando:</h2>
+            <ul id="lista-espectadores"></ul>
+        </div>
+    </div>
+    <script>
+        const jogador = prompt("Digite seu nome para entrar no jogo:");
+        while(!jogador) jogador = prompt("Nome invalido. Digite seu nome e click que OK")
+        const ipServer = 'http://127.0.0.1:65433'
+
+        async function entrarNoJogo() {
+            try {
+                const resposta = await fetch(ipServer, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ jogador: jogador, acao: 'entrar' })
+                });
+                if (!resposta.ok) {
+                    throw new Error('Erro ao entrar no jogo');
+                }
+            } catch (erro) {
+                console.error('Erro ao entrar no jogo:', erro);
+                alert('Erro ao conectar ao servidor. Tente novamente.');
+            }
+        }
+
+        async function jogar(x, y) {
+            try {
+                const resposta = await fetch(ipServer, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ jogador: jogador, acao: 'jogar', x, y })
+                });
+                const resultado = await resposta.json();
+                if (!(resultado.status === 'vitoria'))
+                    alert(resultado.mensagem);
+                
+            } catch (erro) {
+                console.error('Erro ao jogar:', erro);
+            }
+        }
+        function atualizarTabuleiro(estado) {
+            const tabuleiro = document.getElementById('tabuleiro');
+            tabuleiro.innerHTML = '';
+
+            for (let i = 0; i < 5; i++) {
+                for (let j = 0; j < 5; j++) {
+                    const celula = document.createElement('div');
+                    celula.id = `celula-${i}-${j}`;
+                    celula.className = 'celula';
+
+                    if (estado.tabuleiro[i][j] === "bomba") {
+                        celula.innerHTML = '<img src="./bomba.png" alt="Bomba">';
+                        celula.classList.add('clicado');
+                    } else if (estado.tabuleiro[i][j] === "seguro") {
+                        celula.innerHTML = '<img src="./estrela.png" alt="Seguro">';
+                        celula.classList.add('clicado');
+                    } else {
+                        celula.onclick = () => jogar(i, j);
+                    }
+
+                    tabuleiro.appendChild(celula);
+                }
+            }
+        }
+
+        function atualizarListaJogadores(jogadores, jogadorAtual) {
+            const lista = document.getElementById("lista-jogadores");
+            lista.innerHTML = '';
+
+            jogadores.forEach(jogador => {
+                const item = document.createElement("li");
+                item.textContent = jogador;
+
+                if (jogador === jogadorAtual) {
+                    item.classList.add("jogador-atual");
+                }
+
+                lista.appendChild(item);
+            });
+        }
+
+        function atualizarListaEspectadores(espectadores) {
+            const lista = document.getElementById("lista-espectadores");
+            lista.innerHTML = '';
+
+            espectadores.forEach(espectador => {
+                const item = document.createElement("li");
+                item.textContent = espectador;
+                lista.appendChild(item);
+            });
+        }
+
+
+        setInterval(async () => {
+            try {
+                const resposta = await fetch(ipServer + '/estado');
+                const estado = await resposta.json();
+                if(estado.fim) {
+                    const body = document.querySelector('body');
+                    body.innerHTML = `${estado.vencedor} venceu o jogo!`;
+                }
+                atualizarTabuleiro(estado);
+                atualizarListaJogadores(estado.jogadores, estado.jogador_atual);
+                atualizarListaEspectadores(estado.espectadores, estado.espectador_atual);
+
+                // Atualiza a vez do jogador na interface
+                document.getElementById("vez").textContent = `Vez do jogador: ${estado.jogador_atual}`;
+            } catch (erro) {
+                console.error('Erro ao atualizar o jogo:', erro);
+            }
+        }, 500);
+
+
+        entrarNoJogo();
+    </script>
+</body>
+
+</html>

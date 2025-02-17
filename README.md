@@ -33,7 +33,7 @@ O servidor utiliza **sockets e multithreading** para suportar múltiplos jogador
 
 ### 1. Requisitos
 - **Python 3.8+** instalado na máquina  
-- Nenhuma biblioteca externa é necessária (usamos apenas bibliotecas nativas do Python)  
+- Nenhuma biblioteca externa é necessária (apenas bibliotecas nativas do Python)  
 
 ---
 
@@ -47,7 +47,7 @@ O servidor utiliza **sockets e multithreading** para suportar múltiplos jogador
    Este projeto não precisa de bibliotecas externas.  
 
 3. **Execute o servidor:**  
-   `python servidor.py`  
+   `python3 servidor.py`  
 
    Após executar o comando, a seguinte mensagem será exibida:  
    **Servidor iniciado e escutando em 127.0.0.1:65433**  
@@ -58,10 +58,12 @@ O servidor utiliza **sockets e multithreading** para suportar múltiplos jogador
    - Se for jogar na mesma máquina onde o servidor está rodando, acesse:  
      `http://127.0.0.1:65433`  
 
-   - Se for jogar em outra máquina na mesma rede, acesse:  
+   - Se outra máquinas da mesma rede forem jogar, acesse:  
      `http://IP_DA_MAQUINA_SERVIDOR:65433`  
 
-   **Substitua `IP_DA_MAQUINA_SERVIDOR` pelo IP da máquina onde o servidor está rodando.**  
+   **Substitua `IP_DA_MAQUINA_SERVIDOR` pelo IP da máquina onde o servidor está rodando.**
+   server.py: linha 8
+   index.html: linha 146  
 
 Agora o jogo está disponível e pronto para ser jogado por múltiplos jogadores na rede.
 
@@ -69,17 +71,17 @@ Agora o jogo está disponível e pronto para ser jogado por múltiplos jogadores
 
 ## Como Testar  
 Para testar o funcionamento do jogo:  
-1. Abra múltiplas abas do navegador e acesse `http://127.0.0.1:65433`.  
+1. Abra múltiplas abas do navegador e acesse `http://127.0.0.1:65433`, caso outras máquinas entrem, acessem `http://IP_MAQUINA:65433`.  
 2. Cada jogador insere um nome e entra no jogo.  
 3. O jogo avança **turno a turno**.  
 4. Se um jogador clicar em uma bomba, ele vai para a lista de espectadores.  
 5. O último jogador restante vence o jogo, e o resultado é exibido na tela.  
 
 **Testando multiplayer em diferentes dispositivos**  
-Para jogar em outra máquina na mesma rede, utilize o IP do servidor em vez de `localhost`.  
+Para jogar em outra máquina na mesma rede, utilize o IP da máquina do servidor em vez de `localhost`.  
 Exemplo:  
-`http://192.168.1.100:65433`  
-(Onde `192.168.1.100` é o IP da máquina rodando o servidor)  
+`http://190.160.1.100:65433`  
+(Onde `190.160.1.100` é o IP da máquina rodando o servidor)  
 
 ---
 
@@ -98,7 +100,7 @@ Exemplo:
 ## Possíveis Melhorias Futuras  
 - Permitir personalizar o tamanho do tabuleiro e número de bombas.  
 - Implementar um chat no jogo para comunicação entre jogadores.  
-- Criar um sistema de salas para que vários jogos possam acontecer ao mesmo tempo.  
+- Criar um sistema de salas para que vários jogos possam acontecer ao mesmo tempo, com diferentes tamanhos de campo.  
 - Salvar estatísticas dos jogadores (número de vitórias, derrotas, etc.).  
 - Transformar em um jogo online global (hospedando em um servidor real na nuvem).  
-- Correção de bugs quando o último jogador perde e a lista de jogadores fica vazia.  
+- Correção de bugs quando o penúltimo jogador perde o jogo buga e não atualiza normalmente pro vencedor, é necessário reiniciar a pagina.  

@@ -44,10 +44,10 @@ O servidor utiliza **sockets e multithreading** para suportar múltiplos jogador
    `cd T2-Redes`  
 
 2. **Instale as dependências (se houver):**  
-   Este projeto não precisa de bibliotecas externas.  
+   Este projeto não precisa de bibliotecas externas, somente que a imagem da estrela e bomba, dois png, estejam no mesmo diretório do servidoe e do index.  
 
 3. **Execute o servidor:**  
-   `python3 servidor.py`  
+   `python3 server.py`  
 
    Após executar o comando, a seguinte mensagem será exibida:  
    **Servidor iniciado e escutando em 127.0.0.1:65433**  
@@ -63,7 +63,7 @@ O servidor utiliza **sockets e multithreading** para suportar múltiplos jogador
 
    **Substitua `IP_DA_MAQUINA_SERVIDOR` pelo IP da máquina onde o servidor está rodando.**
    server.py: linha 8
-   index.html: linha 146  
+   index.html: linha 147  
 
 Agora o jogo está disponível e pronto para ser jogado por múltiplos jogadores na rede.
 
@@ -103,4 +103,15 @@ Exemplo:
 - Criar um sistema de salas para que vários jogos possam acontecer ao mesmo tempo, com diferentes tamanhos de campo.  
 - Salvar estatísticas dos jogadores (número de vitórias, derrotas, etc.).  
 - Transformar em um jogo online global (hospedando em um servidor real na nuvem).  
-- Correção de bugs quando o penúltimo jogador perde o jogo buga e não atualiza normalmente pro vencedor, é necessário reiniciar a pagina.  
+- Correção de bugs quando o penúltimo jogador perde, o jogo buga e não atualiza normalmente pro vencedor ou que ele é um espectador, é necessário reiniciar a pagina.
+
+---
+## Testes
+ - Pelo comando "top" no terminal, observou-se que com 5 jogadores, o servidor consome 5% da memória(800MB) e 6% da CPU.
+ - Limite teórico de 20 servidores ou 20 salas de 5 jogadores.
+ - ![image](https://github.com/user-attachments/assets/8d4cf2ec-86d9-49d6-bff6-3d1524ede369)
+
+---
+
+## Dificuldades
+ - Baixa experiência com as linguagens python e JavaScript.
